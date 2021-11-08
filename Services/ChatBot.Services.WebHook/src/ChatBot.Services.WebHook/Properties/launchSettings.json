@@ -1,0 +1,26 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:7002/",
+      "sslPort": 0
+    }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "local"
+      }
+    },
+    "ChatBot.Services.WebHook": {
+      "commandName": "Project",
+      "environmentVariables": {
+        " ASPNETCORE_ENVIRONMENT": "local"
+      },
+      "applicationUrl": "http://localhost:7002"
+    }
+  }
+}

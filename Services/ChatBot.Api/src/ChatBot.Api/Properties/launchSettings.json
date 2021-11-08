@@ -1,0 +1,45 @@
+//{
+//  "iisSettings": {
+//    "windowsAuthentication": false,
+//    "anonymousAuthentication": true,
+//    "iisExpress": {
+//      "applicationUrl": "https://0.0.0.0.0:5001;http://0.0.0.0.0:5000",
+//      "sslPort": 44315
+//    }
+//  },
+//  "profiles": {
+//    "IIS Express": {
+//      "commandName": "IISExpress",
+//      "environmentVariables": {
+//        "ASPNETCORE_ENVIRONMENT": "local"
+//      }
+//    },
+//    "OneRehab.Api": {
+//      "commandName": "Project",
+//      "environmentVariables": {
+//        "ASPNETCORE_ENVIRONMENT": "local"
+//      },
+//      "applicationUrl": "https://localhost:443;http://localhost:80/"
+//    }
+//  }
+//}
+
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "https://0.0.0.0.0:5001;http://0.0.0.0.0:5000",
+      "sslPort": 44315
+    }
+  },
+  "profiles": {
+    "ChatBot.Api": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "local"
+      },
+      "applicationUrl": "https://0.0.0.0.0:443;http://0.0.0.0.0:80"
+    }
+  }
+}
