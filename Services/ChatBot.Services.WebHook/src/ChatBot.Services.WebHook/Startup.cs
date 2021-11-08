@@ -7,6 +7,11 @@ using Autofac;
 using AutoMapper;
 using ChatBot.Common.Mvc;
 using MediatR;
+using ChatBot.Common.Pipeline.Behaviors;
+using ChatBot.Common.EventBusRabbitMQ;
+using Microsoft.Extensions.Logging;
+using ChatBot.Common.EventBus.Abstractions;
+using ChatBot.Common.EventBus;
 using ChatBot.Services.WebHook.Services.Interfaces;
 using FluentValidation.AspNetCore;
 using Serilog;
@@ -20,11 +25,12 @@ namespace ChatBot.Services.WebHook
         {
             Configuration1 = configuration;
             BotConfig = Configuration1.GetSection("BotConfiguration").Get<BotConfiguration>();
-           
+            BotConfig1 = Configuration1.GetSection("restEase").Get<RestEaseSettings>();
         }
 
         public IConfiguration Configuration1 { get; }
         private BotConfiguration BotConfig { get; }
+        private RestEaseSettings BotConfig1 { get; }
 
 
         public Startup(IWebHostEnvironment env)
@@ -67,9 +73,26 @@ namespace ChatBot.Services.WebHook
 
             services.AddTransient<ChatBotService>();
 
-            services.AddMediatR(typeof(Startup));      
+            services.AddMediatR(typeof(Startup))
+                    //Register middleware
+                    .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
+                    .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));           
+
+            RegisterEventBus(services);
         }
 
+        private static void RegisterEventBus(IServiceCollection services)
+        {
+            services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+            {
+                var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
+                var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+                var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+                var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+                return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, "chatbot");
+            });
+            services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+        }
 
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

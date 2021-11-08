@@ -100,7 +100,7 @@ namespace ChatBot.Services.WebHook.Services.Interfaces
                 });
 
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                      text: "Choose Your Highest Education",
+                                                      text: "Choose",
                                                       replyMarkup: inlineKeyboard);
             }
 
@@ -117,7 +117,7 @@ namespace ChatBot.Services.WebHook.Services.Interfaces
                 };
 
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
-                                                      text: "Choose Your Age Group",
+                                                      text: "Choose",
                                                       replyMarkup: replyKeyboardMarkup);
             }
 
@@ -190,6 +190,7 @@ namespace ChatBot.Services.WebHook.Services.Interfaces
                                      "/quotes   - list random quote\n" +
                                      "/education   - Whats your highest education\n" +
                                      "/age - Whats your age group";
+                                    
 
                 return await bot.SendTextMessageAsync(chatId: message.Chat.Id,
                                                       text: usage,

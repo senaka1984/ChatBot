@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using Serilog.Settings.Configuration;
 using Serilog.Enrichers.Sensitive;
+using ChatBot.Common.Serilog.Masking;
 
 namespace ChatBot.Api
 {
@@ -59,7 +60,10 @@ namespace ChatBot.Api
                 .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
                 .Enrich.FromLogContext()
                 .ReadFrom.Configuration(configuration, ConfigurationAssemblySource.AlwaysScanDllFiles)
-                
+                .Enrich.WithSensitiveDataMasking(MaskingMode.InArea, new IMaskingOperator[]
+                {
+                    new NRICMaskingOperator(),
+                })
                 .WriteTo.Console()
                 .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
                 .CreateLogger();

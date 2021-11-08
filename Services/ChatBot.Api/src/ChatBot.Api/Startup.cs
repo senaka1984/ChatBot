@@ -10,8 +10,9 @@ using ChatBot.Api.Swagger;
 using ChatBot.Common.Mvc;
 using ChatBot.Common.Redis;
 using ChatBot.Common.RestEase;
-
-
+using Telegram.Bot;
+using ChatBot.Common.Consul;
+using ChatBot.Common.Fabio;
 
 namespace ChatBot.Api
 {
@@ -52,11 +53,11 @@ namespace ChatBot.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddHostedService<ConfigureWebhook>();
-            //services.AddHttpClient("tgwebhook")
-            //        .AddTypedClient<ITelegramBotClient>(httpClient
-            //            => new TelegramBotClient(BotConfig.BotToken, httpClient));
-            //services.AddScoped<HandleUpdateService>();
+            services.AddHostedService<ConfigureWebhook>();
+            services.AddHttpClient("tgwebhook")
+                    .AddTypedClient<ITelegramBotClient>(httpClient
+                        => new TelegramBotClient(BotConfig.BotToken, httpClient));
+           //services.AddScoped<HandleUpdateService>();
 
             services.AddControllers()
                   .AddNewtonsoftJson();
@@ -67,8 +68,8 @@ namespace ChatBot.Api
             services.AddCustomMvc();
             services.AddHttpContextAccessor();
             services.AddSwaggerDocs();
-            //services.AddConsul();
-            //services.AddFabio();
+            services.AddConsul();
+            services.AddFabio();
             services.AddRedis();
             //services.AddJwt();
             // services.AddSingleton(Log.Logger);
